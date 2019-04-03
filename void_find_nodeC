@@ -1,0 +1,78 @@
+
+void find_nodeA(){
+    int a=0;
+    for(int i=0;i<data.size();i++){
+        if(0.005<data[i] && data[i]<0.02){
+            Cpkt.push_back(i);
+            //cout<<i<<endl;
+            a++;
+        }
+    }
+    Cpkt.push_back(600000);
+    cout<<"**************"<<endl;
+    int act_Cpkt=0;
+    int tt=0;
+    auto show=Cpkt.begin();
+    for(auto it=Cpkt.begin();it!=Cpkt.end();it++){
+        if(*(it+1)-*(it)<7) {
+            tt++;
+        } else{
+            if(tt>450 && tt<520) {
+                //advance(show, tt / 2);
+                //if(tt<15) {
+                cout << "A length: " << tt << " \t Pkacket A in : " << *show << endl;
+                A_trans.push_back(*show);
+                act_Cpkt++;
+            }
+            show = it + 1;
+            tt=0;
+
+            /*if(tt>170) {
+                //advance(show, tt / 2);
+                if(tt<180) {
+                    cout << "Apacket length: " << tt << " \t A in : " << *show << endl;
+                    A_trans.push_back(*show);
+                }
+                tt = 0;
+                show = it + 1;
+                act_Cpkt++;
+            }
+            else{
+                continue;
+            }*/
+        }
+    }
+    cout<<endl<<"actual A packets "<<act_Cpkt<<endl;
+    cout<<endl<<a;
+}
+
+
+void find_A_detail(){
+    int count=0;
+    int transmission[10];
+    for(int i=0;i<10;i++)
+        transmission[i]=0;
+    int received=0;
+    for(int i: A_trans){
+        int x=i;
+        count++;
+        for(int j: actual_ack){
+            if(x+470<j && x+530> j){
+                received++;
+                cout<<"The successful transmission of node A at "<< j<<" took "<<count <<" tries"<<endl;
+                if(count>=0 && count<10)
+                    transmission[count]++;
+                count=0;
+                break;
+            }
+
+        }
+    }
+    cout<<"Total packet AP received are: "<<received<<endl;
+
+    cout<<"*********************************";
+    for(int i=0;i<10;i++)
+        cout<<i<<" transmission :"<< transmission[i]<<endl;
+    cout<<"*********************************";
+
+}

@@ -18,9 +18,6 @@ vector<int > A_trans;
 vector<int > B_trans;
 vector<int > C_trans;
 
-int A_total,B_total,C_total;
-int useful_work=0;
-
 vector<float> parsestring(string line){
     vector<float> tokens;
     stringstream check1(line);
@@ -82,9 +79,8 @@ void find_ack(){
                 tt=0;
         }
     }
-    cout<<endl<<"actual ack "<<act_ack<<endl;
+   // cout<<endl<<"actual ack "<<act_ack<<endl;
     //cout<<endl<<a;
-    useful_work+=a;
 }
 
 void find_nodeA(){
@@ -134,7 +130,6 @@ void find_nodeA(){
     }
     cout<<endl<<"actual A packets "<<act_Apkt<<endl;
     //cout<<endl<<a;
-    useful_work+=a;
 }
 
 
@@ -166,8 +161,6 @@ void find_A_detail(){
     for(int i=0;i<10;i++)
         cout<<i<<" transmission :"<< transmission[i]<<endl;
     cout<<"*********************************";
-
-    A_total=received;
 
 }
 
@@ -217,7 +210,6 @@ void find_nodeB(){
     }
     cout<<endl<<"actual B packets "<<act_Bpkt<<endl;
     //cout<<endl<<a;
-    useful_work+=a;
 }
 
 
@@ -248,7 +240,6 @@ void find_B_detail(){
     for(int i=0;i<10;i++)
         cout<<i<<" transmission :"<< transmission[i]<<endl;
     cout<<"*********************************";
-    B_total=received;
 
 }
 
@@ -272,7 +263,7 @@ void find_nodeC(){
         if(*(it+1)-*(it)<7) {
             tt++;
         } else{
-            if(tt>421 && tt<520) {
+            if(tt>450 && tt<520) {
                 //advance(show, tt / 2);
                 //if(tt<15) {
                 cout << "C length: " << tt << " \t Pkacket C in : " << *show << endl;
@@ -298,10 +289,8 @@ void find_nodeC(){
             }*/
         }
     }
-    C_total=act_Cpkt;
     cout<<endl<<"actual C packets "<<act_Cpkt<<endl;
     //cout<<endl<<a;
-    useful_work+=a;
 }
 
 
@@ -315,7 +304,7 @@ void find_C_detail(){
         int x=i;
         count++;
         for(int j: actual_ack){
-            if(x+420<j && x+540> j){
+            if(x+430<j && x+530> j){
                 received++;
                 cout<<"The successful transmission of node C at "<< j<<" took "<<count <<" tries"<<endl;
                 if(count>=0 && count<10)
@@ -332,7 +321,6 @@ void find_C_detail(){
     for(int i=0;i<10;i++)
         cout<<i<<" transmission :"<< transmission[i]<<endl;
     cout<<"*********************************";
-    C_total=received;
 
 }
 
@@ -346,16 +334,6 @@ int main() {
     find_B_detail();
     find_nodeC();
     find_C_detail();
-    double usefulwork=((A_total*174+B_total*250+C_total*500));
-    double total=data.size();
-
-    //cout<<per_usefulwork;
-    cout<<endl;
-    cout<<"-------------------- REPORT BGN ---------------------------"<<endl;
-    cout<<"1. The number of packets from A "<<A_total<<" , B "<<B_total<<", C "<<C_total<<endl;
-    cout<<"2. The percentage medium busy 92.701800"<<endl;
-    cout<<"3. The percentage medium doing useful work "<<(usefulwork/total)*100<<endl;
-    cout<<"-------------------- REPORT END ---------------------------"<<endl;
 
     return 0;
 }
