@@ -22,6 +22,7 @@ int A_transmission[20];
 
 int A_total,B_total,C_total;
 int useful_work=0;
+double medium_busy=0;
 
 vector<float> parsestring(string line){
     vector<float> tokens;
@@ -86,7 +87,6 @@ void find_ack(){
     }
     //cout<<endl<<"actual ack "<<act_ack<<endl;
     //cout<<endl<<a;
-    useful_work+=a;
 }
 
 void find_nodeA(){
@@ -136,7 +136,6 @@ void find_nodeA(){
     }
     //cout<<endl<<"actual A packets "<<act_Apkt<<endl;
     //cout<<endl<<a;
-    useful_work+=a;
 }
 
 
@@ -224,7 +223,6 @@ void find_nodeB(){
     }
     //cout<<endl<<"actual B packets "<<act_Bpkt<<endl;
     //cout<<endl<<a;
-    useful_work+=a;
 
 }
 
@@ -310,7 +308,6 @@ void find_nodeC(){
     C_total=act_Cpkt;
     //cout<<endl<<"actual C packets "<<act_Cpkt<<endl;
     //cout<<endl<<a;
-    useful_work+=a;
 }
 
 
@@ -346,6 +343,17 @@ void find_C_detail(){
 
 }
 
+void medium_busy_func(){
+    medium_busy=0;
+    for(int i=0;i<data.size();i++){
+        if(0.001<data[i]){
+           medium_busy++;
+            //cout<<i<<endl;
+
+        }
+    }
+}
+
 
 int main(int argc, char* argv[]) {
     if(argc<2){
@@ -360,14 +368,15 @@ int main(int argc, char* argv[]) {
     find_B_detail();
     find_nodeC();
     find_C_detail();
+    medium_busy_func();
     double usefulwork=((A_total*174+B_total*250+C_total*500));
     double total=data.size();
-
+    //double medium_busy_result=medium_busy/total;
     //cout<<per_usefulwork;
     cout<<endl;
     cout<<"-------------------- REPORT BGN ---------------------------"<<endl;
     cout<<"1. The number of packets from A "<<A_total<<" , B "<<B_total<<", C "<<C_total<<endl;
-    cout<<"2. The percentage medium busy 92.701800"<<endl;
+    cout<<"2. The percentage medium busy "<<(medium_busy/total)*100<<endl;
     cout<<"3. The percentage medium doing useful work "<<(usefulwork/total)*100<<endl;
     cout<<"-------------------- REPORT END ---------------------------"<<endl;
 
