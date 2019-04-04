@@ -17,6 +17,8 @@ vector<int > actual_ack;
 vector<int > A_trans;
 vector<int > B_trans;
 vector<int > C_trans;
+map<int,string> AP_pkt;
+int A_transmission[20];
 
 int A_total,B_total,C_total;
 int useful_work=0;
@@ -82,7 +84,7 @@ void find_ack(){
                 tt=0;
         }
     }
-    cout<<endl<<"actual ack "<<act_ack<<endl;
+    //cout<<endl<<"actual ack "<<act_ack<<endl;
     //cout<<endl<<a;
     useful_work+=a;
 }
@@ -110,7 +112,7 @@ void find_nodeA(){
                 //advance(show, tt / 2);
                 //if(tt<15) {
                 //cout << "A length: " << tt << " \t Pkacket A in : " << *show << endl;
-                cout<<"node A transmitted a Packet at "<<*show<<endl;
+                //cout<<"node A transmitted a Packet at "<<*show<<endl;
                 A_trans.push_back(*show);
                 act_Apkt++;
             }
@@ -132,7 +134,7 @@ void find_nodeA(){
             }*/
         }
     }
-    cout<<endl<<"actual A packets "<<act_Apkt<<endl;
+    //cout<<endl<<"actual A packets "<<act_Apkt<<endl;
     //cout<<endl<<a;
     useful_work+=a;
 }
@@ -141,8 +143,8 @@ void find_nodeA(){
 
 void find_A_detail(){
     int count=0;
-    int transmission[10];
-    for(int i=0;i<10;i++)
+    int transmission[20];
+    for(int i=0;i<20;i++)
         transmission[i]=0;
     int received=0;
     for(int i: A_trans){
@@ -151,8 +153,9 @@ void find_A_detail(){
         for(int j: actual_ack){
             if(x+170<j and x+190> j){
                 received++;
-                cout<<"The successful transmission of node A at "<< j<<" took "<<count <<" tries"<<endl;
-                if(count>=0 && count<10)
+                //cout<<"The successful transmission of node A at "<< j<<" took "<<count <<" tries"<<endl;
+                AP_pkt[j]="A";
+                if(count>=0 && count<20)
                     transmission[count]++;
                 count=0;
                 break;
@@ -160,14 +163,18 @@ void find_A_detail(){
 
         }
     }
-    cout<<"Total packet AP received are: "<<received<<endl;
+/*    cout<<"Total packet AP received are: "<<received<<endl;
 
     cout<<"*********************************";
-    for(int i=0;i<10;i++)
+    for(int i=0;i<20;i++)
         cout<<i<<" transmission :"<< transmission[i]<<endl;
-    cout<<"*********************************";
+    cout<<"*********************************";*/
+
+    for(int i=0;i<20;i++)
+        A_transmission[i]=transmission[i];
 
     A_total=received;
+    //AP_pkt[received]="A";
 
 }
 
@@ -181,7 +188,7 @@ void find_nodeB(){
         }
     }
     Bpkt.push_back(600000);
-    cout<<"**************"<<endl;
+    //cout<<"**************"<<endl;
     int act_Bpkt=0;
     int tt=0;
     auto show=Bpkt.begin();
@@ -192,7 +199,7 @@ void find_nodeB(){
             if(tt>160 && tt<260) {
                 //advance(show, tt / 2);
                 //if(tt<15) {
-                cout << "B length: " << tt << " \t Pkacket B in : " << *show << endl;
+                //cout << "B length: " << tt << " \t Pkacket B in : " << *show << endl;
                 B_trans.push_back(*show);
                 act_Bpkt++;
                 //show = it + 1;
@@ -215,9 +222,10 @@ void find_nodeB(){
             }*/
         }
     }
-    cout<<endl<<"actual B packets "<<act_Bpkt<<endl;
+    //cout<<endl<<"actual B packets "<<act_Bpkt<<endl;
     //cout<<endl<<a;
     useful_work+=a;
+
 }
 
 
@@ -233,7 +241,8 @@ void find_B_detail(){
         for(int j: actual_ack){
             if(x+150<j && x+300> j){
                 received++;
-                cout<<"The successful transmission of node B at "<< j<<" took "<<count <<" tries"<<endl;
+               // cout<<"The successful transmission of node B at "<< j<<" took "<<count <<" tries"<<endl;
+                AP_pkt[j]="B";
                 if(count>=0 && count<10)
                     transmission[count]++;
                 count=0;
@@ -242,14 +251,14 @@ void find_B_detail(){
 
         }
     }
-    cout<<"Total packet AP received are: "<<received<<endl;
+/*    cout<<"Total packet AP received are: "<<received<<endl;
 
     cout<<"*********************************";
     for(int i=0;i<10;i++)
         cout<<i<<" transmission :"<< transmission[i]<<endl;
-    cout<<"*********************************";
+    cout<<"*********************************";*/
     B_total=received;
-
+    //AP_pkt[received]="B";
 }
 
 
@@ -275,7 +284,7 @@ void find_nodeC(){
             if(tt>421 && tt<520) {
                 //advance(show, tt / 2);
                 //if(tt<15) {
-                cout << "C length: " << tt << " \t Pkacket C in : " << *show << endl;
+                //cout << "C length: " << tt << " \t Pkacket C in : " << *show << endl;
                 C_trans.push_back(*show);
                 act_Cpkt++;
                 //show=it+1;
@@ -299,7 +308,7 @@ void find_nodeC(){
         }
     }
     C_total=act_Cpkt;
-    cout<<endl<<"actual C packets "<<act_Cpkt<<endl;
+    //cout<<endl<<"actual C packets "<<act_Cpkt<<endl;
     //cout<<endl<<a;
     useful_work+=a;
 }
@@ -317,7 +326,8 @@ void find_C_detail(){
         for(int j: actual_ack){
             if(x+420<j && x+540> j){
                 received++;
-                cout<<"The successful transmission of node C at "<< j<<" took "<<count <<" tries"<<endl;
+                //cout<<"The successful transmission of node C at "<< j<<" took "<<count <<" tries"<<endl;
+                AP_pkt[j]="C";
                 if(count>=0 && count<10)
                     transmission[count]++;
                 count=0;
@@ -326,19 +336,23 @@ void find_C_detail(){
 
         }
     }
-    cout<<"Total packet AP received are: "<<received<<endl;
+/*    cout<<"Total packet AP received are: "<<received<<endl;
 
     cout<<"*********************************";
     for(int i=0;i<10;i++)
         cout<<i<<" transmission :"<< transmission[i]<<endl;
-    cout<<"*********************************";
+    cout<<"*********************************";*/
     C_total=received;
 
 }
 
 
-int main() {
-    readfile("/home/tangent/Desktop/spring2019/untitled/proj4_MAC_testdata1");
+int main(int argc, char* argv[]) {
+    if(argc<2){
+        cout<<"Useage: ./output file_name"<<endl;
+        exit(0);
+    }
+    readfile(argv[1]);
     find_ack();
     find_nodeA();
     find_A_detail();
@@ -356,6 +370,22 @@ int main() {
     cout<<"2. The percentage medium busy 92.701800"<<endl;
     cout<<"3. The percentage medium doing useful work "<<(usefulwork/total)*100<<endl;
     cout<<"-------------------- REPORT END ---------------------------"<<endl;
+
+    cout<<endl;
+
+    cout<<"-------------------- BONUS  BGN ---------------------------"<<endl;
+    cout<<"For node A to get a packet received:"<<endl;
+    for(int i=1;i<20;i++)
+        cout<<i<<" transmission: "<<A_transmission[i]<<endl;
+    cout<<"-------------------- BONUS  END ---------------------------"<<endl;
+
+    for(auto i: AP_pkt){
+        cout<<"AP received a packet from node " <<i.second <<" at "<<i.first<<endl;
+        //AP received a packet from node B at 197
+    }
+    for(auto i: A_trans) {
+        cout << "node A transmitted a Packet at " << i << endl;
+    }
 
     return 0;
 }
